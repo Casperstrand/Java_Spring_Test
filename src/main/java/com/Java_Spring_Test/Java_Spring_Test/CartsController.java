@@ -76,4 +76,28 @@ public class CartsController {
         }
         return tempcart;
     }
+
+    @RequestMapping(value = "/getCheapestCart", method = RequestMethod.GET)
+    public Cart getCheapestCart () {
+        Cart cheapCart = getCart(1);
+        for (Cart cart : CartArr) {
+            if (cart.getCartTotal() < cheapCart.getCartTotal()) {
+                cheapCart = cart;
+            }
+        }
+        return cheapCart;
+    }
+
+    @RequestMapping(value = "/getCommonShopper", method = RequestMethod.GET)
+    public ArrayList<Integer> getCommonShopper(@RequestParam("item")int item) {
+        ArrayList<Integer> shopperId = new ArrayList<>();
+        for (Cart cart : CartArr) {
+            for (Product product : cart.getProducts()) {
+                if (product.getId() == item) {
+                    shopperId.add(cart.getUserID());
+                }
+            }
+        }
+        return shopperId;
+    }
 }
